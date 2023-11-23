@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  multi-app-sam-demo
+
+  Sample SAM Template for multi-app-sam-demo
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+    Architectures:
+      - x86_64
+    Runtime: python3.11
+
+Resources:
+
+  Bucket:
+    Type: AWS::S3::Bucket
+
+  HelloWorldFunction1:
+    Type: AWS::Serverless::Function
+    Metadata:
+      SkipBuild: true
+    Properties:
+      CodeUri: hello_world_1/
+      Handler: app.lambda_handler
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref Bucket
+
+  HelloWorldFunction2:
+    Type: AWS::Serverless::Function
+    Metadata:
+      SkipBuild: true
+    Properties:
+      CodeUri: hello_world_2/
+      Handler: app.lambda_handler
